@@ -76,7 +76,7 @@ export const useSavePost = () => {
 
     return useMutation({
         mutationFn: ({ postId, userId }: {postId: string; userId: string }) => savePost(postId, userId),
-        onSuccess: (data) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEYS.GET_RECENT_POSTS]
             })
@@ -143,7 +143,7 @@ export const useDeletePost = () => {
     return useMutation({
         mutationFn: ({postId, imageId} : {postId: string, imageId: string}) => deletePost
         (postId, imageId),
-        onSuccess: (data) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
             })
@@ -155,6 +155,7 @@ export const useGetPosts = () => {
     return useInfiniteQuery({
         queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
         queryFn: getInfinitePosts,
+        initialPageParam:0,
         getNextPageParam: (lastPage: any) => {
             // if there's no data, there are no more pages
             if(lastPage && lastPage.documents.length === 0) {
